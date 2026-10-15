@@ -4,9 +4,9 @@
 // @version      1.17.0
 // @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle Boost 3.x)
 // @match        https://webetud.iut-blagnac.fr/*
-// @updateURL    https://raw.githubusercontent.com/VivienR67/webetud-dark/main/webetud-dark.user.js
-// @downloadURL  https://raw.githubusercontent.com/VivienR67/webetud-dark/main/webetud-dark.user.js
-// @homepageURL  https://github.com/VivienR67/webetud-dark
+// @updateURL    https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
+// @downloadURL  https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
+// @homepageURL  https://github.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac
 // @run-at       document-start
 // @grant        none
 // ==/UserScript==
