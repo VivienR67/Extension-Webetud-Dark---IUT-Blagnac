@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Webetud Dark Modern
 // @namespace    https://webetud.iut-blagnac.fr/
-// @version      1.17.0
-// @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle Boost 3.x)
+// @version      2.0.0
+// @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle 4, thème classic)
 // @match        https://webetud.iut-blagnac.fr/*
 // @updateURL    https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
 // @downloadURL  https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
@@ -103,7 +103,8 @@ hr { border-color: var(--border) !important; }
 /* Bootstrap overrides */
 .bg-white, .bg-light, .bg-dark, .bg-faded { background: var(--surface) !important; }
 .text-dark, .text-body { color: var(--text) !important; }
-.border, .border-top, .border-bottom, .border-left, .border-right { border-color: var(--border) !important; }
+.border, .border-top, .border-bottom, .border-left, .border-right, .border-start, .border-end { border-color: var(--border) !important; }
+.btn-close { filter: invert(1) grayscale(1) brightness(2); } /* Bootstrap 5 : croix noire en SVG */
 
 /* Top navbar */
 nav.navbar {
@@ -115,33 +116,30 @@ nav.navbar {
 nav.navbar, nav.navbar .navbar-brand, nav.navbar .nav-link, nav.navbar .usertext { color: var(--text) !important; }
 nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: transparent !important; border-color: transparent !important; }
 .count-container { background: var(--accent) !important; border-radius: 10px; }
+#usernavigation .divider { background: var(--border) !important; }
 
-/* Left drawer */
-#nav-drawer { background: var(--bg) !important; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-/* Menu général (Accueil, Tableau de bord, cours...) en premier, menu du cours ensuite */
-#nav-drawer > nav.list-group:last-of-type { order: -1; margin-top: 0 !important; }
-#nav-drawer > nav.list-group { flex-shrink: 0; }
-#nav-drawer > nav.wdm-nav, #nav-drawer > nav.wdm-site { order: -1; }
-/* "Mes cours" + cours inscrits : remplacés par le menu complet du script */
-#nav-drawer > nav.list-group:not(.wdm-nav) [data-key="mycourses"],
-#nav-drawer > nav.list-group:not(.wdm-nav) a[data-type="20"] { display: none !important; }
+/* Colonne de gauche : menu du script (remplace le bloc Navigation de Moodle 4) */
+.wdm-menu { padding: 4px 0 !important; }
+.wdm-menu .list-group + .list-group { margin-top: .5rem; }
 .wdm-nav-title { padding: .5rem 1rem .25rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .wdm-emoji { display: inline-block; width: 1.28571em; text-align: center; margin-right: .5rem; font-size: 1.05em; }
-#nav-drawer .list-group { margin-bottom: 1rem; border-radius: var(--radius); overflow: hidden; }
 .list-group-item {
   background: var(--surface) !important;
   color: var(--text) !important;
   border-color: var(--border) !important;
 }
-#nav-drawer .list-group { background: var(--surface) !important; border: 1px solid var(--border); padding: 4px 0; }
-#nav-drawer .list-group-item { background: transparent !important; border: none !important; margin: 2px 6px; border-radius: 8px !important; width: auto; }
-#nav-drawer .list-group-item-action:hover { background: var(--surface-2) !important; }
-.list-group-item.active, #nav-drawer .list-group-item.active, #nav-drawer .list-group-item[data-isactive="1"] {
+.wdm-menu .list-group-item { background: transparent !important; border: none !important; margin: 2px 6px; padding: .45rem .7rem; border-radius: 8px !important; width: auto; font-size: .92rem; }
+.wdm-menu .list-group-item-action:hover { background: var(--surface-2) !important; }
+.wdm-menu .media { display: flex; align-items: center; } /* .media n'existe plus en Bootstrap 5 */
+.wdm-menu .media-body { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-group-item.active {
   background: var(--accent-soft) !important;
   color: var(--accent-hover) !important;
   box-shadow: inset 3px 0 0 var(--accent);
 }
-#nav-drawer .list-group-item.active * { color: var(--accent-hover) !important; }
+.list-group-item.active * { color: var(--accent-hover) !important; }
+/* Colonnes de blocs : la région pleine largeur (classic la fait flotter à droite) */
+.blockcolumn > [data-region="blocks-column"] { float: none !important; width: auto !important; }
 
 /* Cards / blocks */
 .card, .block, #region-main, .moremenu, .dashboard-card {
@@ -166,32 +164,34 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 .course-content .current::before { border-color: var(--accent) !important; }
 .activityicon, .iconlarge.activityicon { filter: brightness(1.15); }
 .section-summary, .section .summary { color: var(--text) !important; }
+.activity-header { background: var(--surface-2) !important; border-radius: 10px; } /* Moodle 4 : dates / achèvement en haut des activités */
 
 /* Breadcrumb */
 .breadcrumb { background: transparent !important; border: none !important; } /* Moodle ajoute une bordure claire sur téléphone */
 .breadcrumb-item + .breadcrumb-item::before { color: var(--muted) !important; }
 
 /* Buttons */
-.btn { border-radius: 8px !important; transition: all .15s; }
+.btn { border-radius: 8px !important; transition: all .15s; color: var(--text); } /* boutons sans couleur (ex. listes du carnet de notes) : texte sombre sinon */
 .btn-primary, .btn-primary:not(:disabled):not(.disabled):active {
   background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important;
 }
 .btn-primary:hover, .btn-primary:focus { background: var(--accent-hover) !important; border-color: var(--accent-hover) !important; }
-.btn-secondary, .btn-light, .btn-outline-secondary {
+.btn-secondary, .btn-light, .btn-outline-secondary, .btn-submit {
   background: var(--surface-2) !important; border-color: var(--border) !important; color: var(--text) !important;
 }
 .btn-secondary:hover, .btn-light:hover { background: var(--border) !important; }
 .btn-link { color: var(--accent-hover) !important; }
-.btn:focus, .form-control:focus, .custom-select:focus { box-shadow: 0 0 0 3px var(--accent-soft) !important; }
+.btn-icon { background: var(--surface-2) !important; color: var(--accent-hover) !important; } /* Moodle 4 : bouton replier une section */
+.btn:focus, .form-control:focus, .custom-select:focus, .form-select:focus { box-shadow: 0 0 0 3px var(--accent-soft) !important; }
 
 /* Forms */
-.form-control, .custom-select, input[type=text], input[type=search], input[type=password], input[type=email], textarea, select {
+.form-control, .custom-select, .form-select, input[type=text], input[type=search], input[type=password], input[type=email], textarea, select {
   background: var(--surface-2) !important;
   border: 1px solid var(--border) !important;
   color: var(--text) !important;
   border-radius: 8px !important;
 }
-.form-control:focus, .custom-select:focus { border-color: var(--accent) !important; }
+.form-control:focus, .custom-select:focus, .form-select:focus { border-color: var(--accent) !important; }
 .form-control::placeholder { color: var(--muted) !important; }
 .input-group-text { background: var(--surface-2) !important; border-color: var(--border) !important; color: var(--muted) !important; }
 
@@ -205,12 +205,19 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 .dropdown-divider { border-color: var(--border) !important; }
 .modal-header, .modal-footer, .popover-header { border-color: var(--border) !important; background: transparent !important; }
 .popover-body { color: var(--text) !important; }
-.close { color: var(--text) !important; text-shadow: none !important; }
+.close, .close * { color: var(--text) !important; text-shadow: none !important; }
+/* Moodle 4 : restes de fonds ou textes clairs/sombres (notes, cours, fichiers, participants) */
+.user-report-container { background: transparent !important; }
+.categoryname { color: var(--muted) !important; }
+.fp-filename { background: transparent !important; }
+.bg-secondary { background-color: var(--border) !important; }
+.form-autocomplete-downarrow { color: var(--muted) !important; }
 
 /* Tables */
 .table, table.generaltable, table.flexible { color: var(--text) !important; background: transparent !important; }
 .table th, .table td, .generaltable th, .generaltable td { border-color: var(--border) !important; background: transparent !important; }
 .generaltable thead th, .table thead th { background: var(--surface-2) !important; }
+.generaltable tbody tr:nth-of-type(2n) { background: transparent !important; } /* Moodle 4 : lignes paires en blanc */
 .table-striped tbody tr:nth-of-type(odd), .generaltable tbody tr:nth-of-type(odd) { background: rgba(255,255,255,.02) !important; }
 .table-hover tbody tr:hover, .generaltable tbody tr:hover { background: var(--accent-soft) !important; }
 
@@ -262,14 +269,7 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 .block .card-title, .block h5 { font-size: .95rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) !important; }
 img { border-radius: 8px; }
 
-/* Colonne de blocs aussi haute que le contenu (flex au lieu de float), sinon le sommaire sticky décroche */
-@media (min-width: 1200px) {
-  #region-main-box { display: flex; gap: 15px; }
-  #region-main-box > #region-main { flex: 1; min-width: 0; }
-  #region-main-box > [data-region="blocks-column"] { float: none; flex: 0 0 360px; }
-}
-
-/* Sommaire du cours (ajouté par le script) */
+/* Sommaire du cours (ajouté par le script, en bas de la colonne de droite) */
 #wdm-toc { position: sticky; top: 70px; display: block !important; padding: 1rem; margin-bottom: 1rem; max-height: calc(100vh - 90px); overflow-y: auto; }
 #wdm-toc h5 { margin: 0 0 .6rem; }
 #wdm-toc a {
@@ -342,9 +342,8 @@ a.wdm-is-late { color: #f87171 !important; }
 /* Téléphone : barre du haut sur une seule ligne, raccourcis en icônes seules, marges réduites */
 @media (max-width: 767.98px) {
   nav.navbar { padding: .35rem .5rem !important; flex-wrap: nowrap !important; }
-  nav.navbar [data-region="drawer-toggle"] { margin-right: .25rem !important; }
-  nav.navbar ul.navbar-nav.ml-auto { flex-wrap: nowrap !important; align-items: center; min-width: 0; }
-  nav.navbar ul.navbar-nav.ml-auto > li { flex-shrink: 0; }
+  #usernavigation { flex-wrap: nowrap !important; align-items: center; min-width: 0; }
+  #usernavigation > * { flex-shrink: 0; }
   nav.navbar .nav-link, nav.navbar .popover-region-toggle { padding-left: .35rem !important; padding-right: .35rem !important; }
   .wdm-quick { gap: .25rem; margin-right: .15rem; }
   #page { padding-left: .5rem !important; padding-right: .5rem !important; }
@@ -378,7 +377,8 @@ a.wdm-is-late { color: #f87171 !important; }
   // Sommaire compact des sections, à la place de l'arbre "Navigation"
   function buildToc() {
     const sections = document.querySelectorAll('.course-content li.section');
-    const region = document.querySelector('[data-region="blocks-column"] .block-region, [data-region="blocks-column"]');
+    // Dans la colonne elle-même (haute comme la page) pour que le sticky tienne jusqu'en bas
+    const region = document.querySelector('.columnright.has-blocks') || document.querySelector('.columnleft');
     if (!sections.length || !region || document.getElementById('wdm-toc')) return;
 
     const toc = document.createElement('nav');
@@ -386,11 +386,10 @@ a.wdm-is-late { color: #f87171 !important; }
     toc.className = 'block card';
     toc.innerHTML = '<h5>Sommaire</h5>';
     sections.forEach((sec) => {
-      const link = sec.querySelector('.sectionname a');
-      const name = (link || sec.querySelector('.sectionname'))?.textContent.trim();
+      const name = sec.querySelector('.sectionname')?.textContent.trim();
       if (!name) return;
       const a = document.createElement('a');
-      a.href = link ? link.href : '#' + sec.id;
+      a.href = '#' + sec.id; // Moodle 4 : le titre mène à section.php, on reste sur la page du cours
       a.textContent = name;
       a.title = name;
       if (sec.classList.contains('current')) a.classList.add('wdm-current');
@@ -408,22 +407,16 @@ a.wdm-is-late { color: #f87171 !important; }
   ];
   const emojiFor = (name) => (EMOJIS.find(([re]) => re.test(name)) || [])[1];
 
-  function addEmojis() {
-    document.querySelectorAll('#nav-drawer a[href*="/course/view.php"]').forEach((a) => {
-      const icon = a.querySelector('.icon.fa-graduation-cap');
-      const emoji = emojiFor(a.querySelector('.media-body')?.textContent.trim() || '');
-      if (!icon || !emoji) return; // matière inconnue = icône d'origine, ajouter une ligne dans EMOJIS
-      const span = document.createElement('span');
-      span.className = 'wdm-emoji';
-      span.textContent = emoji;
-      icon.replaceWith(span);
-    });
-  }
-
-  // Menu de gauche : toutes les matières du S1 + pages de l'ancien bloc "Navigation".
+  // Menu de gauche : pages générales, matières du S1 et pages de l'ancien bloc "Navigation".
   // ponytail: liens en dur pour BUT Info S1 ; au S2, remplacer les URLs (copiées du bloc Navigation).
   const BASE = 'https://webetud.iut-blagnac.fr';
   const MENU = [
+    ['Navigation', [
+      ['Accueil', '/', '🏠'],
+      ['Tableau de bord', '/my/', '🧭'],
+      ['Calendrier', '/calendar/view.php?view=month', '📅'],
+      ['Fichiers personnels', '/user/files.php', '📁'],
+    ]],
     ['BUT Info · S1', [
       ['R1.01-Dev1', '/course/view.php?id=550'],
       ['R1.01-Dev2', '/course/view.php?id=551'],
@@ -452,13 +445,20 @@ a.wdm-is-late { color: #f87171 !important; }
   ];
 
   function buildMenu() {
-    const drawer = document.getElementById('nav-drawer');
-    const siteNav = drawer?.querySelector(':scope > nav.list-group:last-of-type');
-    if (!siteNav || drawer.querySelector('.wdm-nav')) return;
-    siteNav.classList.add('wdm-site'); // garde l'ordre une fois nos menus ajoutés après lui
+    const column = document.querySelector('.columnleft [data-region="blocks-column"]');
+    if (!column || document.querySelector('.wdm-menu')) return;
     const here = location.href;
-    let anchor = siteNav;
-    MENU.forEach(([title, items]) => {
+    // Dans un cours : ses pages Participants / Notes, comme l'ancien tiroir de Moodle 3
+    const course = document.body.className.match(/\bcourse-(\d+)\b/)?.[1];
+    const menu = course && course !== '1'
+      ? [MENU[0], ['Ce cours', [
+          ['Participants', '/user/index.php?id=' + course, '👥'],
+          ['Notes', '/grade/report/index.php?id=' + course, '📝'],
+        ]], ...MENU.slice(1)]
+      : MENU;
+    const block = document.createElement('section');
+    block.className = 'block card mb-3 wdm-menu';
+    menu.forEach(([title, items]) => {
       const nav = document.createElement('nav');
       nav.className = 'list-group wdm-nav';
       nav.setAttribute('aria-label', title);
@@ -473,9 +473,9 @@ a.wdm-is-late { color: #f87171 !important; }
         a.querySelector('.media-body').textContent = name;
         nav.appendChild(a);
       });
-      anchor.after(nav);
-      anchor = nav;
+      block.appendChild(nav);
     });
+    column.prepend(block);
   }
 
   // Calendrier / blocs d'événements : ✅ devoirs rendus et QCM terminés (+ note), ⏳ devoirs pas rendus et QCM ouverts, ❌ devoirs/QCM fermés non faits.
@@ -491,7 +491,8 @@ a.wdm-is-late { color: #f87171 !important; }
       return { ok: false, state: closed ? 'late' : 'open' };
     },
     quiz: (doc) => {
-      const ok = [...doc.querySelectorAll('.quizattemptsummary tbody tr')].some((tr) => /Terminée|Finished/i.test(tr.textContent));
+      // Moodle 4 : une carte par tentative (table.quizreviewsummary, ligne "Statut | Terminée")
+      const ok = [...doc.querySelectorAll('.quizreviewsummary tr')].some((tr) => /Terminée|Finished/i.test(tr.textContent));
       const m = (doc.querySelector('#feedback')?.textContent || '').match(/(\d+(?:[.,]\d+)?)\s*\/\s*(\d+(?:[.,]\d+)?)/);
       const clean = (n) => n.replace(/([.,]\d*?)0+$/, '$1').replace(/[.,]$/, ''); // 10,00 -> 10, 7,50 -> 7,5
       if (!ok) {
@@ -561,9 +562,9 @@ a.wdm-is-late { color: #f87171 !important; }
     ['Notes', 'https://scodocetudiant.iut-blagnac.fr/', 'https://scodocetudiant.iut-blagnac.fr/favicon.ico', 'fa-graduation-cap'],
   ];
   function addQuickLinks() {
-    const right = document.querySelector('nav.navbar ul.navbar-nav.ml-auto');
+    const right = document.getElementById('usernavigation');
     if (!right || right.querySelector('.wdm-quick')) return;
-    const li = document.createElement('li');
+    const li = document.createElement('div');
     li.className = 'nav-item wdm-quick';
     QUICK.forEach(([label, href, icon, fa]) => {
       const a = document.createElement('a');
@@ -581,7 +582,7 @@ a.wdm-is-late { color: #f87171 !important; }
   }
 
   function init() {
-    buildToc(); buildMenu(); addEmojis(); markSubmitted(); addQuickLinks();
+    buildToc(); buildMenu(); markSubmitted(); addQuickLinks();
     // Le calendrier recharge ses mois en AJAX : on re-marque les nouveaux liens
     let t;
     new MutationObserver(() => { clearTimeout(t); t = setTimeout(markSubmitted, 200); })
