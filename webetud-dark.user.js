@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Webetud Dark Modern
 // @namespace    https://webetud.iut-blagnac.fr/
-// @version      2.0.0
+// @version      2.0.1
 // @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle 4, thème classic)
 // @match        https://webetud.iut-blagnac.fr/*
 // @updateURL    https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
@@ -164,6 +164,11 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 .course-content .current::before { border-color: var(--accent) !important; }
 .activityicon, .iconlarge.activityicon { filter: brightness(1.15); }
 .section-summary, .section .summary { color: var(--text) !important; }
+.course-section.hidden .section-item, .course-section.orphaned .section-item { background: transparent !important; } /* sections "Non disponible" : fond clair chez Moodle 4 */
+.availabilityinfo { background: var(--surface-2) !important; border-radius: 8px; }
+.availabilityinfo, .availabilityinfo * { color: var(--muted) !important; }
+.resourcelinkdetails { color: var(--muted) !important; }
+.btn-success { background: rgba(31,157,85,.2) !important; border-color: #1f9d55 !important; color: #4ade80 !important; } /* bouton "Terminé" (achèvement) */
 .activity-header { background: var(--surface-2) !important; border-radius: 10px; } /* Moodle 4 : dates / achèvement en haut des activités */
 
 /* Breadcrumb */
@@ -245,6 +250,7 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 /* Calendar */
 .calendarmonth td, .calendarmonth th { border-color: var(--border) !important; }
 .calendarmonth td.today .day-number-circle { background: var(--accent) !important; }
+.maincalendar .calendarmonth .clickable:hover { background-color: var(--surface-2) !important; } /* Moodle : gris clair au survol */
 .calendar_event_course { background: var(--accent-soft) !important; }
 
 /* Messaging drawer */
