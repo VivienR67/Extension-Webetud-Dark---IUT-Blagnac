@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Webetud Dark Modern
 // @namespace    https://webetud.iut-blagnac.fr/
-// @version      2.0.1
+// @version      2.0.2
 // @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle 4, thème classic)
 // @match        https://webetud.iut-blagnac.fr/*
 // @updateURL    https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
@@ -269,6 +269,24 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 
 /* Login page */
 #page-login-index .card { max-width: 720px; margin: 8vh auto; }
+.login-container { background: var(--surface) !important; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow) !important; }
+.login-container .divider { background: var(--border) !important; }
+.login-identityprovider-btn { background: var(--surface-2) !important; border: 1px solid var(--border) !important; color: var(--text) !important; }
+
+/* Minuteur des QCM : fond blanc chez Moodle ; les paliers rouges (timeleftN) restent ceux de Moodle */
+body #quiz-timer-wrapper #quiz-timer:not([class*="timeleft"]) { background-color: var(--surface-2); color: var(--text); }
+
+/* Sélecteur de fichiers (dépôt de devoir, fichiers personnels) */
+.file-picker .fp-content, .fp-panel-button, .fp-iconview .fp-thumbnail:hover,
+body .filemanager .yui3-datatable-header, .filepicker-filelist .dndupload-target, .filemanager-container .dndupload-target,
+.filemanager.fp-select .fp-reflist .fp-value { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border) !important; }
+/* "body" : Moodle met déjà !important sur ces cellules, il faut un sélecteur plus fort */
+body .filemanager .yui3-datatable-odd .yui3-datatable-cell { background-color: var(--surface-2) !important; border-color: var(--surface-2) !important; }
+body .filemanager .yui3-datatable-even .yui3-datatable-cell { background-color: var(--surface) !important; border-color: var(--surface) !important; }
+.file-picker .fp-list .fp-repo.active, .file-picker .ygtvfocus, .filemanager .ygtvfocus { background: var(--accent-soft) !important; }
+.fitem.disabled .filepicker-filelist, .fitem.disabled .filemanager-container { background-color: var(--surface-2) !important; }
+input[type=file] { color: var(--muted); }
+input[type=file]::file-selector-button { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: .3rem .7rem; margin-right: .6rem; cursor: pointer; }
 
 /* Simplification : blocs redondants masqués (arbre de navigation, liste de cours = déjà dans le menu, recherche forums) */
 .block_navigation, .block_course_list, .block_search_forums { display: none !important; }
