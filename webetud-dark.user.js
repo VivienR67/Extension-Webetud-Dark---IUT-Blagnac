@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Webetud Dark Modern
 // @namespace    https://webetud.iut-blagnac.fr/
-// @version      2.0.2
+// @version      2.1.0
 // @description  Thème sombre moderne (accent indigo) pour Webetud (Moodle 4, thème classic)
 // @match        https://webetud.iut-blagnac.fr/*
 // @updateURL    https://raw.githubusercontent.com/VivienR67/Extension-Webetud-Dark---IUT-Blagnac/main/webetud-dark.user.js
@@ -120,6 +120,7 @@ nav.navbar .btn, nav.navbar .icon { color: var(--text) !important; background: t
 
 /* Colonne de gauche : menu du script (remplace le bloc Navigation de Moodle 4) */
 .wdm-menu { padding: 4px 0 !important; }
+.wdm-burger { display: none !important; } /* bouton ☰ : téléphone seulement */
 .wdm-menu .list-group + .list-group { margin-top: .5rem; }
 .wdm-nav-title { padding: .5rem 1rem .25rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .wdm-emoji { display: inline-block; width: 1.28571em; text-align: center; margin-right: .5rem; font-size: 1.05em; }
@@ -369,6 +370,16 @@ a.wdm-is-late { color: #f87171 !important; }
   #usernavigation { flex-wrap: nowrap !important; align-items: center; min-width: 0; }
   #usernavigation > * { flex-shrink: 0; }
   nav.navbar .nav-link, nav.navbar .popover-region-toggle { padding-left: .35rem !important; padding-right: .35rem !important; }
+  /* Menu de gauche en tiroir ouvert par ☰, comme l'ancien Moodle (sinon Moodle 4 le met tout en bas de la page) */
+  .wdm-burger { display: inline-flex !important; align-items: center; padding: .25rem .4rem !important; margin-right: .25rem; font-size: 1.1rem; }
+  nav.navbar .navbar-brand, #usernavigation > .divider { display: none !important; } /* place pour ☰ + raccourcis ; Accueil est dans le menu */
+  .block.wdm-menu { /* .block : passe devant le border-radius des cartes plus bas */
+    position: fixed !important; top: 0; bottom: 0; left: 0; z-index: 1040; width: min(85vw, 300px);
+    margin: 0 !important; border-radius: 0 16px 16px 0 !important; overflow-y: auto;
+    transform: translateX(-105%); transition: transform .2s;
+  }
+  body.wdm-menu-open .block.wdm-menu { transform: none; }
+  body.wdm-menu-open::after { content: ''; position: fixed; inset: 0; z-index: 1035; background: rgba(0,0,0,.55); }
   .wdm-quick { gap: .25rem; margin-right: .15rem; }
   #page { padding-left: .5rem !important; padding-right: .5rem !important; }
   .card, .block, #region-main { border-radius: 12px !important; }
@@ -500,6 +511,21 @@ a.wdm-is-late { color: #f87171 !important; }
       block.appendChild(nav);
     });
     column.prepend(block);
+
+    // Téléphone : bouton ☰ dans la barre du haut ; un clic en dehors du menu le referme
+    const burger = document.createElement('button');
+    burger.type = 'button';
+    burger.className = 'btn wdm-burger';
+    burger.setAttribute('aria-label', 'Menu');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.innerHTML = '<i class="icon fa fa-bars fa-fw m-0" aria-hidden="true"></i>';
+    burger.onclick = () => burger.setAttribute('aria-expanded', document.body.classList.toggle('wdm-menu-open'));
+    document.querySelector('nav.navbar .navbar-brand')?.before(burger);
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.wdm-menu, .wdm-burger')) return;
+      document.body.classList.remove('wdm-menu-open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
   }
 
   // Calendrier / blocs d'événements : ✅ devoirs rendus et QCM terminés (+ note), ⏳ devoirs pas rendus et QCM ouverts, ❌ devoirs/QCM fermés non faits.
